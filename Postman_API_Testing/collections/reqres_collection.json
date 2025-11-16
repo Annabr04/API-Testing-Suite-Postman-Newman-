@@ -1,0 +1,273 @@
+{
+	"info": {
+		"_postman_id": "db45b905-d834-4f0b-8a82-4c69a5e41bea",
+		"name": "ReqRes QA Tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19175475"
+	},
+	"item": [
+		{
+			"name": "{{base_url}}{{api_path}}/users?page=2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status is 200\", () => {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Body has a non-empty users array\", () => {\r",
+							"  const j = pm.response.json();\r",
+							"  pm.expect(j.data).to.be.an(\"array\").that.is.not.empty;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Log current environment name\", function () {\r",
+							"    console.log(\"Environment Name:\", pm.environment.name);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Log current environment variables\", function () {\r",
+							"    console.log(\"Base URL:\", pm.environment.get(\"base_url\"));\r",
+							"    console.log(\"Tester Name:\", pm.environment.get(\"name\"));\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "reqres-free-v1",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}{{api_path}}/users?page=2",
+					"host": [
+						"{{base_url}}{{api_path}}"
+					],
+					"path": [
+						"users"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "{{base_url}}{{api_path}}/users/2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status is 200\", () => {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"User id is 2\", () => {\r",
+							"  const j = pm.response.json();\r",
+							"  pm.expect(j.data.id).to.eql(2);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "reqres-free-v1",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}{{api_path}}/users/2",
+					"host": [
+						"{{base_url}}{{api_path}}"
+					],
+					"path": [
+						"users",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "{{base_url}}{{api_path}}/users/23",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status is 404 for invalid user\", () => {\r",
+							"  pm.response.to.have.status(404);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "reqres-free-v1",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}{{api_path}}/users/23\n",
+					"host": [
+						"{{base_url}}{{api_path}}"
+					],
+					"path": [
+						"users",
+						"23\n"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "{{base_url}}{{api_path}}/users",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status is 201\", () => pm.response.to.have.status(201));\r",
+							"\r",
+							"// Parse the response\r",
+							"const j = pm.response.json();\r",
+							"\r",
+							"\r",
+							"//Save the new user ID to the environment\r",
+							"pm.environment.set(\"user_id\", j.id);\r",
+							"\r",
+							"// Log it so you can see it in the console\r",
+							"console.log(\"Created user:\", j.name, \"id:\", j.id,\"iter:\", pm.info.iteration);\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "reqres-free-v1",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"{{name}}\",\r\n  \"job\": \"{{job}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}{{api_path}}/users",
+					"host": [
+						"{{base_url}}{{api_path}}"
+					],
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					"console.log(\"➡️ Running request:\", pm.info.requestName);\r",
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					"// Runs for EVERY request in this collection\r",
+					"\r",
+					"pm.test(\"Response time under 1500ms\", () => {\r",
+					"    pm.expect(pm.response.responseTime).to.be.below(1500);\r",
+					"});\r",
+					"\r",
+					"pm.test(\"Content-Type header exists\", () => {\r",
+					"    pm.response.to.have.header(\"Content-Type\");\r",
+					"});\r",
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": ""
+		},
+		{
+			"key": "api_path",
+			"value": ""
+		}
+	]
+}
